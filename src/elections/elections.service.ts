@@ -10,15 +10,30 @@ export class ElectionsService {
     private electionsRepository: Repository<Elections>,
   ) {}
 
-  async createElection(data) {
-    const { name } = data;
-    const vote = this.electionsRepository.findOne({ where: { name } });
+  getAll(){
+    return this.electionsRepository.find()
+  }
 
-    if (!vote) {
+  async createElection(data) {
+    const { name, end } = data;
+
+    const Election = await this.electionsRepository.findOne({
+      where: { name },
+    });
+
+    if (Election) {
       return { message: 'that name already use' };
     }
 
-    this.electionsRepository.save(this.electionsRepository.create(data));
+    const endDate = new Date(end);
+
+    await this.electionsRepository.save(
+      this.electionsRepository.create({
+        ...data,
+        begin: new Date(),
+        end: endDate,
+      }),
+    );
     return { message: 'vote register successfully' };
   }
 }

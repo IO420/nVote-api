@@ -4,15 +4,15 @@ import { ElectionsDto } from './dto/elections.dto';
 
 @Controller('elections')
 export class ElectionsController {
-    constructor(private readonly electionService:ElectionsService){}
+  constructor(private readonly electionService: ElectionsService) {}
 
-    @Get()
-    getAll(){   
-        return
-    }
+  @Get()
+  getAll() {
+    return this.electionService.getAll();
+  }
 
-    @Post()
-    createElection(@Body()data:ElectionsDto){   
-        return this.electionService.createElection(data)
-    }
+  @Post()
+  createElection(@Body() data: ElectionsDto) {
+    return this.electionService.createElection(data);
+  }
 }

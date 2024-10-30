@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
 import { compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import { LoginUserDto, UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -14,35 +15,41 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  getAllUsers(){
-    return this.userRepository.find({order:{name:'ASC'}})
+  getAllUsers() {
+    return this.userRepository.find({ order: { name: 'ASC' } });
   }
 
-  getUsers(id){
-    return this.userRepository.findOne({where:{id_user:id}})
+  getUsers(id: number) {
+    return this.userRepository.findOne({ where: { id_user: id } });
   }
 
-  getUsersByName(name){
-    return this.userRepository.findOne({where:{name}})
+  async getUsersByName(name: string) {
+    return this.userRepository.findOne({ where: { name } });
   }
 
-  async registerUser(data){
+  async registerUser(data: UserDto) {
     const { name } = data;
-    const user = this.getUsers(name)
-    if(user){
+    const user = await this.getUsersByName(name);
+
+    if (user) {
       throw new HttpException('user already exist', 403);
     }
 
     const password = this.generatePassword();
     const hashedpassword = await hash(password, 10);
 
-    data = {...data,password:hashedpassword}
-    
-    this.userRepository.save(this.userRepository.create(data))
-    return {message:'register successfully'}
+    await this.userRepository.save(
+      this.userRepository.create({
+        ...data,
+        password: hashedpassword,
+        type: 2,
+      }),
+    );
+
+    return { message: 'register successfully' };
   }
 
-  async login(data) {
+  async login(data: LoginUserDto) {
     const { name, password } = data;
     const user = await this.userRepository.findOne({ where: { name } });
     if (!user) {
@@ -56,13 +63,12 @@ export class UserService {
 
     const payload = {
       id_user: user.id_user,
-      user:user.name,
+      user: user.name,
     };
 
     const token = this.jwtService.sign(payload, {
       expiresIn: '7h',
     });
-
 
     return { token };
   }
@@ -75,5 +81,4 @@ export class UserService {
       .map(() => chars[Math.floor(Math.random() * chars.length)])
       .join('');
   }
-  
 }

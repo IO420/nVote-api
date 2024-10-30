@@ -1,7 +1,12 @@
-import { IsString } from "class-validator";
+import { IsNumber, IsString } from 'class-validator';
 
-export class User_Elections{
-    @IsString()
-    option:string
+export class userElectionsDto {
+  @IsNumber()
+  id_user: number;
 
+  @IsNumber()
+  id_elections: number;
+
+  @IsString()
+  option: string;
 }

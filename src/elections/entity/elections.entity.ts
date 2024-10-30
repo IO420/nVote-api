@@ -6,13 +6,13 @@ export class Elections{
     @PrimaryGeneratedColumn()
     id_elections:number
 
-    @Column()
+    @Column({type:"varchar",nullable:false})
     name:string
 
-    @Column()
+    @Column({type:"date",nullable:false})
     begin:Date
 
-    @Column()
+    @Column({type:"date",nullable:false})
     end:Date
     
 } 

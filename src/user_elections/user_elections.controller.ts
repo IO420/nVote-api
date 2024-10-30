@@ -1,19 +1,29 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { UserElectionsService } from './user_elections.service';
-import { ElectionsDto } from 'src/elections/dto/elections.dto';
+import { userElectionsDto } from './dto/user_elections.dto';
 
 @Controller('user-elections')
 export class UserElectionsController {
-    constructor(private readonly userElectionServices:UserElectionsService){}
+  constructor(private readonly userElectionServices: UserElectionsService) {}
 
-    @Get()
-    getAll(){
-        return this.userElectionServices.getAll()
+  @Get()
+  getAll() {
+    return this.userElectionServices.getAll();
+  }
+
+  @Post()
+  createAssignament(@Body() data: userElectionsDto) {
+    return this.userElectionServices.createAssignament(data);
+  }
+
+  @Post()
+  voteElections(@Req() req: Request, @Body() data: userElectionsDto) {
+    const token = req.headers['authorization']?.split(' ')[1];
+
+    if (!token) {
+      return { message: 'Token not provided.' };
     }
 
-    @Post()
-    createAssignament(@Body()data:ElectionsDto){   
-        return this.userElectionServices.createAssignament(data)
-    }
-
+    return this.userElectionServices.voteElections(token, data);
+  }
 }

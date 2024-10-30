@@ -3,10 +3,11 @@ import { UserElectionsService } from './user_elections.service';
 import { UserElectionsController } from './user_elections.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User_elections } from './entity/user_elections.entity';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([User_elections]),],
+  imports: [TypeOrmModule.forFeature([User_elections]),JwtModule],
   providers: [UserElectionsService],
-  controllers: [UserElectionsController]
+  controllers: [UserElectionsController],
 })
 export class UserElectionsModule {}
