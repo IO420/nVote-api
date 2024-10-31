@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { UserElectionsService } from './user_elections.service';
 import { UserElectionsController } from './user_elections.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,9 +12,10 @@ import { WebsocketModule } from 'src/websocket/websocket.module';
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'JWT_SECRET',
     }),
-    WebsocketModule,
+    forwardRef(() => WebsocketModule),
   ],
   providers: [UserElectionsService],
   controllers: [UserElectionsController],
+  exports:[UserElectionsService],
 })
 export class UserElectionsModule {}

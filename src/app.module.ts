@@ -11,6 +11,7 @@ import { UserElectionsModule } from './user_elections/user_elections.module';
 import { User } from './user/entity/user.entity';
 import { Elections } from './elections/entity/elections.entity';
 import { User_elections } from './user_elections/entity/user_elections.entity';
+import { WebsocketModule } from './websocket/websocket.module';
 
 @Module({
   imports: [

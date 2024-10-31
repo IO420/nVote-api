@@ -47,4 +47,9 @@ export class UserElectionsController {
 
     return this.userElectionServices.voteElections(token, data);
   }
+
+  @Post('bringUserElection')
+  getrelation(@Body('id_user') id_user:number){
+    return this.userElectionServices.findUserElection(id_user)
+  }
 }

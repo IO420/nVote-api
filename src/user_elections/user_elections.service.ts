@@ -27,6 +27,16 @@ export class UserElectionsService {
     });
   }
 
+  async findUserElection(id_user: number) {
+    const options = await this.UserElectionsRepository.find({where: { id_user }});
+
+    if (options.length === 0) {
+      return { message: "You don't have any votes" };
+    }
+
+    return options; // Retorna las elecciones encontradas
+  }
+
   async createAssignament(data: userElectionsDto) {
     const { id_user, id_elections } = data;
 
