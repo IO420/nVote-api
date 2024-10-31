@@ -46,7 +46,7 @@ export class UserService {
       }),
     );
 
-    return { message: 'register successfully' };
+    return { message: 'register successfully',password };
   }
 
   async login(data: LoginUserDto) {

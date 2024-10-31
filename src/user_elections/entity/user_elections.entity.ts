@@ -11,6 +11,6 @@ export class User_elections {
   @Column({ type: 'int', nullable: false })
   id_elections: number;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: true })
   option: string;
 }

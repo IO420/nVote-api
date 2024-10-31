@@ -10,6 +10,9 @@ export class UserDto{
 
     @IsString()
     email:string
+
+    @IsNumber()
+    type:number
 }
 
 export class LoginUserDto{

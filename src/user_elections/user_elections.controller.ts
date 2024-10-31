@@ -11,7 +11,7 @@ export class UserElectionsController {
     return this.userElectionServices.getAll();
   }
 
-  @Post()
+  @Post('assign')
   createAssignament(@Body() data: userElectionsDto) {
     return this.userElectionServices.createAssignament(data);
   }

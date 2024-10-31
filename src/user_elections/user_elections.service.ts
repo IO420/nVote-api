@@ -4,11 +4,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { userElectionsDto } from './dto/user_elections.dto';
 import { JwtService } from '@nestjs/jwt';
+import { VotingGateway } from 'src/websocket/websocket.gateway';
 
 @Injectable()
 export class UserElectionsService {
   constructor(
     private jwtService: JwtService,
+    private websocketGateway: VotingGateway,
     @InjectRepository(User_elections)
     private UserElectionsRepository: Repository<User_elections>,
   ) {}
@@ -44,16 +46,16 @@ export class UserElectionsService {
   async voteElections(token: string, data: userElectionsDto) {
     const decodedToken = this.jwtService.verify(token);
     const tokenUserId = decodedToken.id_user;
-    const { id_user } = tokenUserId;
-    console.log(tokenUserId);
 
     const { id_elections } = data;
-    const assign = await this.findRelation(id_user, id_elections);
+    const assign = await this.findRelation(tokenUserId, id_elections);
 
     if (!assign) {
       return { message: 'you are not assigned' };
     }
     await this.UserElectionsRepository.update(assign.id_user_elections, data);
+
+    this.websocketGateway.server.emit('updateVoters', { tokenUserId, id_elections });
 
     return { message: 'assign vote' };
   }
