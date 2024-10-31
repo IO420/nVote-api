@@ -13,12 +13,6 @@ export class UserDto{
 
     @IsNumber()
     type:number
-}
-
-export class LoginUserDto{
-
-    @IsString()
-    name:string
 
     @IsString()
     password:string

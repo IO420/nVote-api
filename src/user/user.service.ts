@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
 import { compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { LoginUserDto, UserDto } from './dto/user.dto';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -29,27 +29,28 @@ export class UserService {
 
   async registerUser(data: UserDto) {
     const { name } = data;
+
     const user = await this.getUsersByName(name);
 
     if (user) {
       throw new HttpException('user already exist', 403);
     }
 
-    const password = this.generatePassword();
+    const password = data.password ?? this.generatePassword();
     const hashedpassword = await hash(password, 10);
 
     await this.userRepository.save(
       this.userRepository.create({
         ...data,
         password: hashedpassword,
-        type: 2,
+        type: data.type ?? 2,
       }),
     );
 
     return { message: 'register successfully',password };
   }
 
-  async login(data: LoginUserDto) {
+  async login(data: UserDto) {
     const { name, password } = data;
     const user = await this.userRepository.findOne({ where: { name } });
     if (!user) {

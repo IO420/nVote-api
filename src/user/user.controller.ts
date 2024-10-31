@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { LoginUserDto, UserDto } from './dto/user.dto';
+import { UserDto } from './dto/user.dto';
 import { Authguard } from 'src/guard/auth.guard';
 import { Roles } from 'src/guard/roles.decorator';
 
@@ -37,7 +37,7 @@ export class UserController {
   }
 
   @Post('login')
-  login(@Body() data: LoginUserDto) {
+  login(@Body() data: UserDto) {
     return this.userService.login(data);
   }
 }
