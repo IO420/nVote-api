@@ -48,8 +48,14 @@ export class UserElectionsController {
     return this.userElectionServices.voteElections(token, data);
   }
 
-  @Post('bringUserElection')
-  getrelation(@Body('id_user') id_user:number){
-    return this.userElectionServices.findUserElection(id_user)
+  @Get('bringUserElection')
+  async getRelation(@Req() req: Request) {
+    const token = req.headers['authorization']?.split(' ')[1];
+
+    if (!token) {
+      return { message: 'Token not provided.' };
+    }
+    
+    return this.userElectionServices.findUserElection(token);
   }
 }

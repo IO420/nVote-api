@@ -27,14 +27,20 @@ export class UserElectionsService {
     });
   }
 
-  async findUserElection(id_user: number) {
-    const options = await this.UserElectionsRepository.find({where: { id_user }});
+  async findUserElection(token: string) {
+    const decodedToken = this.jwtService.verify(token);
+    const tokenUserId = decodedToken.id_user;
+
+    const options = await this.UserElectionsRepository.find({
+      where: { id_user: tokenUserId },
+      relations: ['election'],
+    });
 
     if (options.length === 0) {
       return { message: "You don't have any votes" };
     }
 
-    return options; // Retorna las elecciones encontradas
+    return options;
   }
 
   async createAssignament(data: userElectionsDto) {
