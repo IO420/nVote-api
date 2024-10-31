@@ -26,6 +26,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/platform-socket.io": "^10.4.6",
+    "@nestjs/swagger": "^8.0.1",
     "@nestjs/typeorm": "^10.0.2",
     "@nestjs/websockets": "^10.4.6",
     "@types/bcrypt": "^5.0.2",
@@ -38,6 +39,7 @@
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "socket.io": "^4.8.1",
+    "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {

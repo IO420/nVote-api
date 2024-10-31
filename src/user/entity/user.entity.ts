@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { User_elections } from "src/user_elections/entity/user_elections.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name:'user'})
 export class User{
@@ -13,5 +14,8 @@ export class User{
 
     @Column({type:'int', nullable:false})
     type:number
+
+    @OneToMany(() => User_elections, userElection => userElection.user)
+    userElections: User_elections[];
 
 } 

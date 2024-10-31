@@ -20,19 +20,29 @@ export class Authguard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException('missing token');
+      throw new UnauthorizedException('Missing token');
     }
 
-    const payload = await this.jwtService.verifyAsync(token, {
-      secret: this.configService.get('JWT_SECRET'),
-    });
-
-    request['user'] = payload;
-    return true;
+    try {
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('JWT_SECRET'),
+      });
+      request['user'] = payload;
+      return true;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization.split(' ') ?? [];
+    const authorizationHeader = request.headers.authorization;
+    
+    if (!authorizationHeader) {
+      return undefined;
+    }
+
+    const [type, token] = authorizationHeader.split(' ');
+
     return type === 'Bearer' ? token : undefined;
   }
 }

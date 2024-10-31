@@ -1,8 +1,19 @@
-import { WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
+import { ApiTags } from '@nestjs/swagger';
+import {
+  WebSocketGateway,
+  WebSocketServer,
+  SubscribeMessage,
+  OnGatewayInit,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
+@ApiTags('WebSocket')
 @WebSocketGateway({ cors: true })
-export class VotingGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class VotingGateway
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
   @WebSocketServer() server: Server;
 
   afterInit(server: Server) {

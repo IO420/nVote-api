@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
 import { compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { UserDto } from './dto/user.dto';
+import { LoginDto, UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -50,7 +50,7 @@ export class UserService {
     return { message: 'register successfully',password };
   }
 
-  async login(data: UserDto) {
+  async login(data: LoginDto) {
     const { name, password } = data;
     const user = await this.userRepository.findOne({ where: { name } });
     if (!user) {
@@ -65,6 +65,7 @@ export class UserService {
     const payload = {
       id_user: user.id_user,
       user: user.name,
+      type:user.type
     };
 
     const token = this.jwtService.sign(payload, {

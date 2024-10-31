@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { Elections } from './entity/elections.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Authguard } from 'src/guard/auth.guard';
+import { RolesGuard } from 'src/guard/roles.guard';
 
 @Injectable()
 export class ElectionsService {

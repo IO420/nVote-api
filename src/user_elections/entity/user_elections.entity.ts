@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Elections } from 'src/elections/entity/elections.entity';
+import { User } from 'src/user/entity/user.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'user_elections' })
 export class User_elections {
@@ -13,4 +15,12 @@ export class User_elections {
 
   @Column({ type: 'varchar', nullable: true })
   option: string;
+
+  @ManyToOne(() => User, (user) => user.userElections, { onDelete: 'CASCADE' })
+  user: User;
+
+  @ManyToOne(() => Elections, (election) => election.userElections, {
+    onDelete: 'CASCADE',
+  })
+  election: Elections;
 }
