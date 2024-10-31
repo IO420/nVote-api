@@ -55,7 +55,7 @@ export class UserElectionsService {
     }
     await this.UserElectionsRepository.update(assign.id_user_elections, data);
 
-    this.websocketGateway.server.emit('updateVoters', { tokenUserId, id_elections });
+    this.websocketGateway.server.emit('updateVoters', { data });
 
     return { message: 'assign vote' };
   }
